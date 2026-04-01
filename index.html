@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gerador de Variações Visuais - Transforme suas imagens em diferentes versões com filtros e paletas de cores">
+    <meta name="theme-color" content="#00539B">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    
+    <title>Gerador de Variações Visuais - RHOSE PE</title>
+    
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <div class="header">
+        <h1>Gerador de Variações e Exportação</h1>
+        <p>Faça o upload da imagem e baixe as versões filtradas em PNG com fundo transparente.</p>
+    </div>
+    
+    <div class="upload-section">
+        <label for="imageInput"><strong>Selecione a imagem (PNG Transparente):</strong></label><br>
+        <input type="file" id="imageInput" accept="image/*">
+    </div>
+
+    <div class="download-all-section" id="downloadAllSection" style="display: none;">
+        <button class="download-all-btn" onclick="baixarTodas()">Baixar Todas (ZIP)</button>
+    </div>
+
+    <div class="container" id="imageContainer" style="display: none;">
+        
+        <div class="card">
+            <h3>1. Original</h3>
+            <canvas id="canvasOriginal"></canvas>
+            <button class="download-btn" onclick="baixarImagem('canvasOriginal', 'logo_original.png')">Baixar PNG</button>
+        </div>
+
+        <div class="card">
+            <h3>2. Cores do SUS</h3>
+            <canvas id="canvasSus"></canvas>
+            <button class="download-btn" onclick="baixarImagem('canvasSus', 'logo_sus.png')">Baixar PNG</button>
+        </div>
+
+        <div class="card">
+            <h3>3. Cores de Pernambuco</h3>
+            <canvas id="canvasPe"></canvas>
+            <button class="download-btn" onclick="baixarImagem('canvasPe', 'logo_pe.png')">Baixar PNG</button>
+        </div>
+
+        <div class="card">
+            <h3>4. Tons Pastel</h3>
+            <canvas id="canvasPastel"></canvas>
+            <button class="download-btn" onclick="baixarImagem('canvasPastel', 'logo_pastel.png')">Baixar PNG</button>
+        </div>
+        
+        <div class="card">
+            <h3>5. Escala de Cinza</h3>
+            <canvas id="canvasGrayscale"></canvas>
+            <button class="download-btn" onclick="baixarImagem('canvasGrayscale', 'logo_cinza.png')">Baixar PNG</button>
+        </div>
+
+        <div class="card">
+            <h3>6. Cinza Claro (Quase Branco)</h3>
+            <canvas id="canvasCinzaClaro"></canvas>
+            <button class="download-btn" onclick="baixarImagem('canvasCinzaClaro', 'logo_cinza_claro.png')">Baixar PNG</button>
+        </div>
+
+        <div class="card tom-sobre-tom">
+            <h3>7. Branco Tom sobre Tom</h3>
+            <canvas id="canvasTomSobreTom"></canvas>
+            <button class="download-btn" onclick="baixarImagem('canvasTomSobreTom', 'logo_tom_sobre_tom.png')">Baixar PNG</button>
+        </div>
+
+        <div class="card silhouette-white">
+            <h3>8. Silhueta Branca</h3>
+            <canvas id="canvasSilhuetaBranca"></canvas>
+            <button class="download-btn" onclick="baixarImagem('canvasSilhuetaBranca', 'logo_silhueta_branca.png')">Baixar PNG</button>
+        </div>
+
+        <div class="card">
+            <h3>9. Silhueta Preta</h3>
+            <canvas id="canvasSilhuetaPreta"></canvas>
+            <button class="download-btn" onclick="baixarImagem('canvasSilhuetaPreta', 'logo_silhueta_preta.png')">Baixar PNG</button>
+        </div>
+
+    </div>
+
+    <img id="imgBase" style="display: none;" src="" alt="">
+
+    <!-- Biblioteca para criar ZIP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+</html>
