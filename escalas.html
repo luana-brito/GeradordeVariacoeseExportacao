@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Variações Visuais - RHOSE PE</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            background-color: #eaeff5;
+            color: #333;
+            margin: 0;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .upload-section {
+            max-width: 500px;
+            margin: 0 auto 30px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        input[type="file"] {
+            margin-top: 10px;
+            padding: 10px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            width: 80%;
+            cursor: pointer;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card h3 {
+            margin-top: 0;
+            font-size: 1.1em;
+            color: #444;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        canvas {
+            max-width: 100%;
+            height: auto;
+            max-height: 220px;
+            object-fit: contain;
+            display: block;
+            margin: auto;
+            margin-bottom: 15px;
+        }
+        
+        /* Botão de Download */
+        .download-btn {
+            padding: 10px;
+            background-color: #00539B; /* Azul Institucional */
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.95em;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        .download-btn:hover {
+            background-color: #003087;
+        }
+
+        /* Fundos de demonstração específicos para os cards */
+        
+        /* Branco Tom sobre Tom com fundo escuro para demonstração */
+        .tom-sobre-tom {
+            background-color: #2c3e50; 
+            color: #fff;
+        }
+        .tom-sobre-tom h3 {
+            color: #fff;
+            border-bottom-color: #444;
+        }
+        
+        /* Silhueta Branca em fundo escuro */
+        .silhouette-white {
+            background-color: #1a1a2e;
+            color: #fff;
+        }
+        .silhouette-white h3 {
+            color: #fff;
+            border-bottom-color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Gerador de Variações e Exportação</h1>
+        <p>Faça o upload da imagem e baixe as versões filtradas em PNG com fundo transparente.</p>
+    </div>
+    
+    <div class="upload-section">
+        <label for="imageInput"><strong>Selecione a imagem (PNG Transparente):</strong></label><br>
+        <input type="file" id="imageInput" accept="image/*">
+    </div>
+
+    <div class="container" id="imageContainer" style="display: none;">
+        
+        <div class="card">
+            <h3>1. Original</h3>
+            <canvas id="canvasOriginal"></canvas>
+            <button class="download-btn" onclick="baixarImagem('canvasOriginal', 'logo_original.png')">Baixar PNG</button>
+        </div>
+
+        <div class="card">
+            <h3>2. Cores do SUS</h3>
+            <canvas id="canvasSus"></canvas>
+            <button class="download-btn" onclick="baixarImagem('canvasSus', 'logo_sus.png')">Baixar PNG</button>
+        </div>
+
+        <div class="card">
+            <h3>3. Cores de Pernambuco</h3>
+            <canvas id="canvasPe"></canvas>
+            <button class="download-btn" onclick="baixarImagem('canvasPe', 'logo_pe.png')">Baixar PNG</button>
+        </div>
+
+        <div class="card">
+            <h3>4. Tons Pastel</h3>
+            <canvas id="canvasPastel"></canvas>
+            <button class="download-btn" onclick="baixarImagem('canvasPastel', 'logo_pastel.png')">Baixar PNG</button>
+        </div>
+        
+        <div class="card">
+            <h3>5. Escala de Cinza</h3>
+            <canvas id="canvasGrayscale"></canvas>
+            <button class="download-btn" onclick="baixarImagem('canvasGrayscale', 'logo_cinza.png')">Baixar PNG</button>
+        </div>
+
+        <div class="card">
+            <h3>6. Cinza Claro (Quase Branco)</h3>
+            <canvas id="canvasCinzaClaro"></canvas>
+            <button class="download-btn" onclick="baixarImagem('canvasCinzaClaro', 'logo_cinza_claro.png')">Baixar PNG</button>
+        </div>
+
+        <div class="card tom-sobre-tom">
+            <h3>7. Branco Tom sobre Tom</h3>
+            <canvas id="canvasTomSobreTom"></canvas>
+            <button class="download-btn" onclick="baixarImagem('canvasTomSobreTom', 'logo_tom_sobre_tom.png')">Baixar PNG</button>
+        </div>
+
+        <div class="card silhouette-white">
+            <h3>8. Silhueta Branca</h3>
+            <canvas id="canvasSilhuetaBranca"></canvas>
+            <button class="download-btn" onclick="baixarImagem('canvasSilhuetaBranca', 'logo_silhueta_branca.png')">Baixar PNG</button>
+        </div>
+
+        <div class="card">
+            <h3>9. Silhueta Preta</h3>
+            <canvas id="canvasSilhuetaPreta"></canvas>
+            <button class="download-btn" onclick="baixarImagem('canvasSilhuetaPreta', 'logo_silhueta_preta.png')">Baixar PNG</button>
+        </div>
+
+    </div>
+
+    <img id="imgBase" style="display: none;" src="" alt="">
+
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const imageContainer = document.getElementById('imageContainer');
+        const imgBase = document.getElementById('imgBase');
+
+        // Paletas (RGB)
+        const paletas = {
+            pastel: {
+                red: [247, 181, 183],     
+                yellow: [252, 231, 182],  
+                green: [188, 224, 191],   
+                blue: [220, 227, 245]     
+            },
+            sus: {
+                red: [242, 169, 0],       
+                yellow: [242, 169, 0],    
+                green: [0, 90, 170],      
+                blue: [0, 90, 170]        
+            },
+            pe: {
+                red: [237, 28, 36],       
+                yellow: [255, 209, 0],    
+                green: [0, 150, 57],      
+                blue: [0, 48, 135]        
+            }
+        };
+
+        function rgbToHsl(r, g, b) {
+            r /= 255; g /= 255; b /= 255;
+            let max = Math.max(r, g, b), min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+            if (max === min) { h = s = 0; } 
+            else {
+                let d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                    case g: h = (b - r) / d + 2; break;
+                    case b: h = (r - g) / d + 4; break;
+                }
+                h /= 6;
+            }
+            return [h * 360, s, l];
+        }
+
+        // Renderiza filtros básicos usando ctx.filter
+        function aplicarFiltroBasico(canvasId, filterString, alpha = 1.0) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            canvas.width = imgBase.naturalWidth;
+            canvas.height = imgBase.naturalHeight;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.filter = filterString;
+            ctx.globalAlpha = alpha;
+            ctx.drawImage(imgBase, 0, 0);
+            
+            // Reseta para não afetar futuros desenhos
+            ctx.filter = 'none';
+            ctx.globalAlpha = 1.0;
+        }
+
+        // Renderiza paletas de cores substituindo pixels
+        function aplicarPaletaCanvas(canvasId, paleta) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d', { willReadFrequently: true });
+            
+            canvas.width = imgBase.naturalWidth;
+            canvas.height = imgBase.naturalHeight;
+            ctx.drawImage(imgBase, 0, 0);
+
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+
+            for (let i = 0; i < data.length; i += 4) {
+                let r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
+
+                if (a === 0) continue; 
+
+                let [h, s, l] = rgbToHsl(r, g, b);
+
+                if (s > 0.1 && l < 0.95 && l > 0.05) {
+                    let corDestino = null;
+
+                    if (h < 25 || h > 330) corDestino = paleta.red;
+                    else if (h >= 25 && h < 75) corDestino = paleta.yellow;
+                    else if (h >= 75 && h < 170) corDestino = paleta.green;
+                    else if (h >= 170 && h <= 330) corDestino = paleta.blue;
+
+                    if (corDestino) {
+                        data[i] = corDestino[0];
+                        data[i+1] = corDestino[1];
+                        data[i+2] = corDestino[2];
+                    }
+                }
+            }
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        // Função responsável por acionar o Download
+        function baixarImagem(canvasId, nomeArquivo) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = nomeArquivo;
+            link.href = canvas.toDataURL('image/png'); // Exporta preservando a transparência
+            link.click();
+        }
+
+        // Quando o usuário escolhe a imagem
+        imageInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    imgBase.src = e.target.result;
+                    
+                    imgBase.onload = function() {
+                        // 1. Original
+                        aplicarFiltroBasico('canvasOriginal', 'none');
+                        
+                        // 2, 3 e 4. Paletas customizadas
+                        aplicarPaletaCanvas('canvasSus', paletas.sus);
+                        aplicarPaletaCanvas('canvasPe', paletas.pe);
+                        aplicarPaletaCanvas('canvasPastel', paletas.pastel);
+                        
+                        // 5. Escala de Cinza
+                        aplicarFiltroBasico('canvasGrayscale', 'grayscale(100%)');
+                        
+                        // 6. Cinza Claro (Quase branco, com 70% de opacidade)
+                        aplicarFiltroBasico('canvasCinzaClaro', 'grayscale(100%) brightness(150%) contrast(20%)', 0.7);
+                        
+                        // 7. Branco Tom sobre Tom (Logotipo quase branco, mas o card em volta será escuro para visualizar)
+                        aplicarFiltroBasico('canvasTomSobreTom', 'brightness(0) invert(0.95)');
+                        
+                        // 8 e 9. Silhuetas Branca e Preta
+                        aplicarFiltroBasico('canvasSilhuetaBranca', 'brightness(0) invert(1)');
+                        aplicarFiltroBasico('canvasSilhuetaPreta', 'brightness(0)');
+                    }
+
+                    imageContainer.style.display = 'grid';
+                }
+                
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+
+</body>
+</html>
