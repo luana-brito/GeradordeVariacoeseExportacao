@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gerador de Variações Visuais - Transforme suas imagens em diferentes versões com filtros e paletas de cores">
+    <meta name="theme-color" content="#667eea">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Gerador de Variações Visuais">
+    <meta property="og:description" content="Transforme suas imagens em diferentes versões com filtros e paletas de cores">
+    <meta property="og:type" content="website">
+    
+    <title>Gerador de Variações Visuais</title>
+    
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Gerador de Variações Visuais</h1>
+        <p>Faça o upload da imagem e baixe as versões filtradas em PNG com fundo transparente.</p>
+    </div>
+    
+    <div class="upload-section">
+        <label for="imageInput"><strong>Selecione uma imagem (PNG Transparente recomendado)</strong></label>
+        <div class="file-input-wrapper">
+            <input type="file" id="imageInput" accept="image/*">
+            <label for="imageInput" class="custom-file-upload" id="fileLabel">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+                <span>Clique ou arraste uma imagem</span>
+            </label>
+            <p class="file-name" id="fileName"></p>
+        </div>
+    </div>
+    
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Processando imagem...</p>
+    </div>
+    
+    <div class="download-all-section" id="downloadAllSection" style="display: none;">
+        <button class="download-all-btn" onclick="baixarTodas()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Baixar Todas as Variações
+        </button>
+    </div>
+
+    <div class="container" id="imageContainer" style="display: none;">
+        
+        <div class="card">
+            <h3>1. Original</h3>
+            <div class="canvas-wrapper">
+                <canvas id="canvasOriginal"></canvas>
+            </div>
+            <button class="download-btn" onclick="baixarImagem('canvasOriginal', 'logo_original.png')">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Baixar PNG
+            </button>
+        </div>
+
+        <div class="card">
+            <h3>2. Cores do SUS</h3>
+            <div class="canvas-wrapper">
+                <canvas id="canvasSus"></canvas>
+            </div>
+            <button class="download-btn" onclick="baixarImagem('canvasSus', 'logo_sus.png')">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Baixar PNG
+            </button>
+        </div>
+
+        <div class="card">
+            <h3>3. Cores de Pernambuco</h3>
+            <div class="canvas-wrapper">
+                <canvas id="canvasPe"></canvas>
+            </div>
+            <button class="download-btn" onclick="baixarImagem('canvasPe', 'logo_pe.png')">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Baixar PNG
+            </button>
+        </div>
+
+        <div class="card">
+            <h3>4. Tons Pastel</h3>
+            <div class="canvas-wrapper">
+                <canvas id="canvasPastel"></canvas>
+            </div>
+            <button class="download-btn" onclick="baixarImagem('canvasPastel', 'logo_pastel.png')">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Baixar PNG
+            </button>
+        </div>
+        
+        <div class="card">
+            <h3>5. Escala de Cinza</h3>
+            <div class="canvas-wrapper">
+                <canvas id="canvasGrayscale"></canvas>
+            </div>
+            <button class="download-btn" onclick="baixarImagem('canvasGrayscale', 'logo_cinza.png')">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Baixar PNG
+            </button>
+        </div>
+
+        <div class="card">
+            <h3>6. Cinza Claro (Quase Branco)</h3>
+            <div class="canvas-wrapper">
+                <canvas id="canvasCinzaClaro"></canvas>
+            </div>
+            <button class="download-btn" onclick="baixarImagem('canvasCinzaClaro', 'logo_cinza_claro.png')">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Baixar PNG
+            </button>
+        </div>
+
+        <div class="card tom-sobre-tom">
+            <h3>7. Branco Tom sobre Tom</h3>
+            <div class="canvas-wrapper">
+                <canvas id="canvasTomSobreTom"></canvas>
+            </div>
+            <button class="download-btn" onclick="baixarImagem('canvasTomSobreTom', 'logo_tom_sobre_tom.png')">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Baixar PNG
+            </button>
+        </div>
+
+        <div class="card silhouette-white">
+            <h3>8. Silhueta Branca</h3>
+            <div class="canvas-wrapper">
+                <canvas id="canvasSilhuetaBranca"></canvas>
+            </div>
+            <button class="download-btn" onclick="baixarImagem('canvasSilhuetaBranca', 'logo_silhueta_branca.png')">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Baixar PNG
+            </button>
+        </div>
+
+        <div class="card">
+            <h3>9. Silhueta Preta</h3>
+            <div class="canvas-wrapper">
+                <canvas id="canvasSilhuetaPreta"></canvas>
+            </div>
+            <button class="download-btn" onclick="baixarImagem('canvasSilhuetaPreta', 'logo_silhueta_preta.png')">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Baixar PNG
+            </button>
+        </div>
+
+    </div>
+    
+    <footer class="footer">
+        <p>Gerador de Variações Visuais</p>
+    </footer>
+
+    <!-- Imagem base oculta -->
+    <img id="imgBase" style="display: none;" src="" alt="">
+    
+    <!-- Toast notification -->
+    <div class="toast" id="toast"></div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
